@@ -3,6 +3,8 @@
 {% block content %}
 
 <h2>{{post.title}}</h2>
+<small>{{post.date.strftime('%Y-%m-%d')}}</small>
+<hr>
 <div class="body">
     {{post.body|nl2br|safe}}
 </div>

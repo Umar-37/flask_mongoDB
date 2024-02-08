@@ -1,4 +1,4 @@
-
+import datetime
 from flask import Flask, render_template
 from .db import get_database
 from flask import request, redirect, url_for
@@ -32,6 +32,7 @@ def new():
         body = request.form['body']
         doc = {
             "title": title,
+            "date": datetime.datetime.now(),
             "body": body
         }
         posts.insert_one(doc)
@@ -44,7 +45,8 @@ def edit(id):
     if request.method == "POST":
         title = request.form["title"]
         body = request.form["body"]
-        updated = {'$set': {'body': body, "title": title}}
+        date = datetime.datetime.now(),
+        updated = {'$set': {'body': body, "title": title, "date": date}}
         posts.update_one({"_id":ObjectId(id)}, updated)
         return redirect(url_for('posts_admin.list'))
     row = posts.find_one({'_id':ObjectId(id)})

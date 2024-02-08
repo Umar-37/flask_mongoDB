@@ -15,7 +15,7 @@ posts = dbname["posts"]
 
 @bp.route("/")
 def list():
-    rows = posts.find()
+    rows = posts.find().sort({'date':-1})
     return render_template('posts/list.html', posts=rows)
 
 @bp.route("/<id>")
