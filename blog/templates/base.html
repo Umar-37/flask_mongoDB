@@ -26,7 +26,13 @@
                 <li><a href="{{url_for('posts.list')}}">Posts</a></li>
                 <li><a href="{{url_for('common.link_list')}}">Links</a></li>
                 {% if g.user %}
-                <li><a href="{{ url_for('users.list') }}">Users</a></li>
+                <li>
+                    Admin:
+                    <ul>
+                        <li><a href="{{ url_for('users_admin.list') }}">Users</a></li>
+                        <li><a href="{{ url_for('posts_admin.list') }}">Post</a></li>
+                    </ul>
+                </li>
                 {% endif %}
             </ul>
         </div> <!-- header-->

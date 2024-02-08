@@ -4,7 +4,6 @@
 
 - bootstrap, cdn then localy hosted
 - README installiation steps
-- simple login page
 
 
 ## MongoDb

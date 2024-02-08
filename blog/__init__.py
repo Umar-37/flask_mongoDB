@@ -1,5 +1,5 @@
 from flask import Flask
-from . import users, posts, auth, common
+from . import posts, posts_admin, auth, common, users_admin
 from datetime import datetime
 
 
@@ -9,8 +9,9 @@ def create_app():
     app.secret_key = "secret"
     app.register_blueprint(common.bp)
     app.register_blueprint(auth.bp)
-    app.register_blueprint(users.bp)
+    app.register_blueprint(users_admin.bp)
     app.register_blueprint(posts.bp)
+    app.register_blueprint(posts_admin.bp)
 
     @app.context_processor
     def inject_now():

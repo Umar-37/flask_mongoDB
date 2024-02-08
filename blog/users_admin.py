@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash
 from .auth import login_required
 
 
-bp = Blueprint('users', __name__, url_prefix='/users')
+bp = Blueprint('users_admin', __name__, url_prefix='/admin/users')
 dbname = get_database()
 users = dbname["users"]
 
@@ -18,17 +18,17 @@ users = dbname["users"]
 @login_required
 def list():
     rows = users.find()
-    return render_template('users/list.html', users=rows)
+    return render_template('admin/users/list.html', users=rows)
 
 @bp.route("/<id>")
 def view(id):
     row = users.find_one({'_id':ObjectId(id)})
-    return render_template('users/view.html', user=row)
+    return render_template('admin/users/view.html', user=row)
 
 @bp.route("/delete/<id>", methods=['POST'])
 def delete(id):
     users.delete_one({'_id':ObjectId(id)})
-    return redirect(url_for('users.list'))
+    return redirect(url_for('users_admin.list'))
 
 @bp.route("/new/", methods=['POST', 'GET'])
 @login_required
@@ -42,8 +42,8 @@ def new():
             "password": hash
         }
         users.insert_one(doc)
-        return redirect(url_for('users.list'))
-    return render_template('users/new.html')
+        return redirect(url_for('users_admin.list'))
+    return render_template('admin/users/new.html')
 
 @bp.route("/edit/<id>", methods=['POST', 'GET'])
 @login_required
@@ -53,6 +53,6 @@ def edit(id):
         password = request.form["password"]
         updated = {'$set': {'password': password, "username": username}}
         users.update_one({"_id":ObjectId(id)}, updated)
-        return redirect(url_for('users.list'))
+        return redirect(url_for('users_admin.list'))
     row = users.find_one({'_id':ObjectId(id)})
-    return render_template('users/edit.html', user=row)
+    return render_template('admin/users/edit.html', user=row)
