@@ -18,10 +18,10 @@
         <tr>
             <td> <a href="{{ url_for('posts.view', id=post._id) }}"> {{ post.title }} </a> </td>
             {% if g.user %}
-            <td> <a href="{{ url_for('posts.edit', id=post._id) }}">Edit</a> </td>
+            <td> <a href="{{ url_for('posts.edit', id=post._id) }}" class="btn btn-sm btn-secondary">Edit</a> </td>
             <td>
                 <form action="{{url_for('posts.delete', id=post._id)}}" method="post">
-                    <button type="submit"> Delete </button>
+                    <button type="submit" class="btn btn-sm btn-danger"> Delete </button>
                 </form>
             </td>
             {% endif %}
@@ -30,5 +30,5 @@
     </tbody>
 </table>
 
-<a href="{{url_for('posts.new')}}">New Post</a>
+<a href="{{url_for('posts.new')}}" class="btn btn-primary">New Post</a>
 {% endblock %}

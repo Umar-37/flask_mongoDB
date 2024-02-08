@@ -4,9 +4,7 @@
 
 - bootstrap, cdn then localy hosted
 - README installiation steps
-- form autofocus
 - simple login page
-- copyright date
 
 
 ## MongoDb

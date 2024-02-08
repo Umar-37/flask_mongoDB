@@ -1,16 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h2>New Posts</h2>
 <form method="post">
-    <div>
-        <label for="title">Title:</label>
-        <input name="title" type="text" id="title">
+    <div class="mb-3 row">
+        <label for="title" class="col-sm-2 col-form-label">Title:</label>
+        <div class="col-sm-10">
+            <input autofocus name="title" type="text" id="title" class="form-control">
+        </div>
     </div>
 
-    <div>
-        <label for="body">Body:</label>
-        <textarea name="body" type="text" id="body"></textarea>
+    <div class="mb-3 row">
+        <label for="body" class="col-sm-2 col-form-label">Body:</label>
+        <div class="col-sm-10">
+            <textarea name="body" type="text" id="body" rows="10" class="form-control"></textarea>
+        </div>
     </div>
-    <button type="submit">Save</button>
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
 {% endblock %}
