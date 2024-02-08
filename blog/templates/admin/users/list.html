@@ -14,7 +14,7 @@
     <tbody>
         {% for user in users %}
         <tr>
-            <td> <a href="{{ url_for('users_admin.view', id=user._id) }}"> {{ user.username }} </a> </td>
+            <td> {{ user.username }} </td>
             <td> <a href="{{ url_for('users_admin.edit', id=user._id) }}" class="btn btn-sm btn-secondary">Edit</a>
             </td>
             <td>

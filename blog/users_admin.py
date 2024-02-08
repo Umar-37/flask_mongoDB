@@ -1,5 +1,5 @@
 
-from flask import render_template
+from flask import render_template, flash
 from .db import get_database
 from flask import request, redirect, url_for
 from bson.objectid import ObjectId
@@ -20,14 +20,11 @@ def list():
     rows = users.find()
     return render_template('admin/users/list.html', users=rows)
 
-@bp.route("/<id>")
-def view(id):
-    row = users.find_one({'_id':ObjectId(id)})
-    return render_template('admin/users/view.html', user=row)
-
 @bp.route("/delete/<id>", methods=['POST'])
+@login_required
 def delete(id):
     users.delete_one({'_id':ObjectId(id)})
+    flash("User deleted")
     return redirect(url_for('users_admin.list'))
 
 @bp.route("/new/", methods=['POST', 'GET'])
@@ -51,7 +48,8 @@ def edit(id):
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        updated = {'$set': {'password': password, "username": username}}
+        hash = generate_password_hash(password)
+        updated = {'$set': {'password': hash, "username": username}}
         users.update_one({"_id":ObjectId(id)}, updated)
         return redirect(url_for('users_admin.list'))
     row = users.find_one({'_id':ObjectId(id)})
