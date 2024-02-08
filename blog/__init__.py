@@ -1,5 +1,6 @@
 from flask import Flask
 from . import users, posts, auth, common
+from datetime import datetime
 
 
 def create_app():
@@ -10,6 +11,10 @@ def create_app():
     app.register_blueprint(auth.bp)
     app.register_blueprint(users.bp)
     app.register_blueprint(posts.bp)
+
+    @app.context_processor
+    def inject_now():
+        return {'now': datetime.utcnow()}
 
     @app.template_filter('nl2br')
     def nl2br(value):
