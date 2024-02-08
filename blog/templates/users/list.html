@@ -11,7 +11,6 @@
     </tr>
 
     {% for user in users %}
-
     <tr>
         <td> <a href="{{ url_for('users.view', id=user._id) }}"> {{ user.username }} </a> </td>
         <td> <a href="{{ url_for('users.edit', id=user._id) }}">Edit</a> </td>
@@ -22,6 +21,7 @@
         </td>
     </tr>
     {% endfor %}
+
 </table>
 
 <a href="{{url_for('users.new')}}">New User</a>

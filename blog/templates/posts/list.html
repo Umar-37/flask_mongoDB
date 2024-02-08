@@ -3,19 +3,19 @@
 {% block content %}
 
 <h1>Posts</h1>
-<table style="border: 1px solid black;">
+<table border="1" xstyle="border: 1px solid black;">
     <tr>
         <th>Title</th>
-        {% if auth is defined and auth.authenticated == True %}
+        {% if g.user %}
         <th>Edit</th>
         <th>Delete</th>
         {% endif %}
     </tr>
-    {% for post in posts %}
 
+    {% for post in posts %}
     <tr>
         <td> <a href="{{ url_for('posts.view', id=post._id) }}"> {{ post.title }} </a> </td>
-        {% if auth is defined and auth.authenticated == True %}
+        {% if g.user %}
         <td> <a href="{{ url_for('posts.edit', id=post._id) }}">Edit</a> </td>
         <td>
             <form action="{{url_for('posts.delete', id=post._id)}}" method="post">
@@ -25,6 +25,7 @@
         {% endif %}
     </tr>
     {% endfor %}
+
 </table>
 
 <a href="{{url_for('posts.new')}}">New Post</a>
