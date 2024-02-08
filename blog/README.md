@@ -1,13 +1,12 @@
-# Todos
+# Flask and MongoDb sample app
 
-- Login required decoreator
-- add user to global variable
+## Todos
+
 - bootstrap, cdn then localy hosted
-- git
 - README installiation steps
-- home, about in seperate blueprint
 - form autofocus
 - simple login page
+- copyright date
 
 
 ## MongoDb
