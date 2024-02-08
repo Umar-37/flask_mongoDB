@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="post" action="{{url_for('login')}}">
+<form method="post">
     <div>
         <label for="username">Username:</label>
         <input name="username" type="text" id="username">
     </div>
 
     <div>
-        <label for="username">Password:</label>
-        <textarea name="password" type="text" id="username"></textarea>
+        <label for="password">Password:</label>
+        <input name="password" type="password" id="password" />
     </div>
     <button type="submit">Login</button>
 </form>

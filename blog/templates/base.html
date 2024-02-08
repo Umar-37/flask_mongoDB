@@ -10,19 +10,19 @@
 
 <body>
     <div>
-        <h1><a href="{{url_for('home')}}">MyBlog</a></h1>
+        <h1><a href="{{url_for('common.home')}}">MyBlog</a></h1>
         {% if auth is defined and auth.authenticated == True %}
         <h2>Welcome {{auth.username}}</h2>
         {% endif %}
         <ul>
             {% if auth is defined and auth.authenticated == True %}
-            <li><a href="{{url_for('logout')}}">Logout</a></li>
+            <li><a href="{{url_for('auth.logout')}}">Logout</a></li>
             {% else %}
-            <li><a href="{{url_for('login')}}">Login</a></li>
+            <li><a href="{{url_for('auth.login')}}">Login</a></li>
             {% endif %}
-            <li><a href="{{url_for('about')}}">About</a></li>
+            <li><a href="{{url_for('common.about')}}">About</a></li>
             <li><a href="{{url_for('posts.list')}}">Posts</a></li>
-            <li><a href="{{url_for('link_list')}}">Links</a></li>
+            <li><a href="{{url_for('common.link_list')}}">Links</a></li>
             {% if auth is defined and auth.authenticated == True %}
             <li><a href="{{ url_for('users.list') }}">Users</a></li>
             {% endif %}

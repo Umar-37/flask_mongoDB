@@ -26,8 +26,8 @@ def list():
 
 @bp.route("/<id>")
 def view(id):
-    rows = posts.find({'_id':ObjectId(id)})
-    return render_template('posts/view.html', post=rows[0])
+    row = posts.find_one({'_id':ObjectId(id)})
+    return render_template('posts/view.html', post=row)
 
 @bp.route("/delete/<id>", methods=['POST'])
 def delete(id):
@@ -49,12 +49,11 @@ def new():
 
 @bp.route("/edit/<id>", methods=['POST', 'GET'])
 def edit(id):
-    rows = posts.find({'_id':ObjectId(id)})
-    if request.method == "GET":
-        return render_template('posts/edit.html', post=rows[0])
-    else:
+    if request.method == "POST":
         title = request.form["title"]
         body = request.form["body"]
         updated = {'$set': {'body': body, "title": title}}
         posts.update_one({"_id":ObjectId(id)}, updated)
         return redirect(url_for('posts.list'))
+    row = posts.find_one({'_id':ObjectId(id)})
+    return render_template('posts/edit.html', post=row)
