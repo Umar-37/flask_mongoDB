@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+</head>
+
+<body>
+    <div>
+        <h1><a href="{{url_for('home')}}">MyBlog</a></h1>
+        {% if auth is defined and auth.authenticated == True %}
+        <h2>Welcome {{auth.username}}</h2>
+        {% endif %}
+        <ul>
+            {% if auth is defined and auth.authenticated == True %}
+            <li><a href="{{url_for('logout')}}">Logout</a></li>
+            {% else %}
+            <li><a href="{{url_for('login')}}">Login</a></li>
+            {% endif %}
+            <li><a href="{{url_for('about')}}">About</a></li>
+            <li><a href="{{url_for('posts.list')}}">Posts</a></li>
+            <li><a href="{{url_for('link_list')}}">Links</a></li>
+            {% if auth is defined and auth.authenticated == True %}
+            <li><a href="{{ url_for('users.list') }}">Users</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div style="margin-top:100px;" id="footer">
+        {% block footer %}
+        &copy; Copyright 2010 by <a href="http://domain.invalid/">you</a>.
+        {% endblock %}
+    </div>
+</body>
+
+</html>

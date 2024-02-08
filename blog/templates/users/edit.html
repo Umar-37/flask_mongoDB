@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+    <h2>Edit page</h2>
+    <div>
+        <label for="username">Username:</label>
+        <input value="{{user.username}}" name="username" type="text" id="username">
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <textarea name="password" type="text" id="password"></textarea>
+    </div>
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
