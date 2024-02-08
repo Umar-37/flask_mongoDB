@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-
+from .auth import login_required
 bp = Blueprint('posts', __name__, url_prefix='/posts')
 
 dbname = get_database()
@@ -30,11 +30,13 @@ def view(id):
     return render_template('posts/view.html', post=row)
 
 @bp.route("/delete/<id>", methods=['POST'])
+@login_required
 def delete(id):
     posts.delete_one({'_id':ObjectId(id)})
     return redirect(url_for('posts.list'))
 
 @bp.route("/new/", methods=['POST', 'GET'])
+@login_required
 def new():
     if request.method == "POST":
         title = request.form['title']
@@ -48,6 +50,7 @@ def new():
     return render_template('posts/new.html')
 
 @bp.route("/edit/<id>", methods=['POST', 'GET'])
+@login_required
 def edit(id):
     if request.method == "POST":
         title = request.form["title"]

@@ -7,22 +7,18 @@ from flask import (
     Blueprint, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import generate_password_hash
+from .auth import login_required
 
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 dbname = get_database()
 users = dbname["users"]
 
-
 @bp.route("/")
+@login_required
 def list():
-    if 'user_id' not in session or session['user_id'] is None:
-        return render_template('login.html')
     rows = users.find()
-    auth = {}
-    auth['authenticated'] = True
-    auth['username'] = session['username']
-    return render_template('users/list.html', users=rows, auth=auth)
+    return render_template('users/list.html', users=rows)
 
 @bp.route("/<id>")
 def view(id):
@@ -35,6 +31,7 @@ def delete(id):
     return redirect(url_for('users.list'))
 
 @bp.route("/new/", methods=['POST', 'GET'])
+@login_required
 def new():
     if request.method == "POST":
         username = request.form['username']
@@ -49,6 +46,7 @@ def new():
     return render_template('users/new.html')
 
 @bp.route("/edit/<id>", methods=['POST', 'GET'])
+@login_required
 def edit(id):
     if request.method == "POST":
         username = request.form["username"]
