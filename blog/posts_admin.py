@@ -15,7 +15,7 @@ posts = dbname["posts"]
 
 @bp.route("/")
 def list():
-    rows = posts.find()
+    rows = posts.find({}, {'title':1})
     return render_template('admin/posts/list.html', posts=rows)
 
 @bp.route("/delete/<id>", methods=['POST'])

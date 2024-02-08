@@ -6,8 +6,8 @@
 <ul>
     {% for post in posts %}
     <li>
-        <h3>{{post.title}}</h3>
-        <div>{{post.body}}</div>
+        <h3> <a href="{{ url_for('posts.view', id=post._id) }}">{{post.title}}</a></h3>
+        <div>{{post.body | truncate}}</div>
     </li>
     {% endfor %}
 </ul>
