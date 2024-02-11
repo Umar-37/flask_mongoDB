@@ -45,8 +45,13 @@ def edit(id):
     if request.method == "POST":
         title = request.form["title"]
         body = request.form["body"]
-        date = datetime.datetime.now(),
-        updated = {'$set': {'body': body, "title": title, "date": date}}
+        updated = {
+            '$set': {
+            'body': body, "title": title
+            },
+            '$currentDate': {
+                'date': {'$type': 'date'}
+            }}
         posts.update_one({"_id":ObjectId(id)}, updated)
         return redirect(url_for('posts_admin.list'))
     row = posts.find_one({'_id':ObjectId(id)})
