@@ -1,6 +1,11 @@
 from flask import Flask
 from . import posts, posts_admin, auth, common, users_admin
 from datetime import datetime
+from markupsafe import Markup, escape
+import re
+from jinja2 import pass_eval_context
+
+
 
 
 def create_app():
@@ -17,8 +22,18 @@ def create_app():
         return {'now': datetime.utcnow()}
 
     @app.template_filter('nl2br')
-    def nl2br(value):
-        lines = value.split('\n')
-        lines =[f"<p>{line}</p>" for line in lines if line.strip() != '']
-        return '\n'.join(lines)
+    @pass_eval_context
+    def nl2br(eval_ctx, value):
+        br = "<br>\n"
+
+        if eval_ctx.autoescape:
+            value = escape(value)
+            br = Markup(br)
+
+        result = "\n\n".join(
+            f"<p>{br.join(p.splitlines())}</p>"
+            for p in re.split(r"(?:\r\n|\r(?!\n)|\n){2,}", value)
+        )
+        return Markup(result) if eval_ctx.autoescape else result
+
     return app
