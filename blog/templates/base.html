@@ -1,58 +1,78 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - Flaskr</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>{% block title %}{% endblock %} - My Webpage</title>
-    {% endblock %}
 </head>
 
 <body>
-    <div class="container">
 
+    <header class="p-3 text-bg-dark">
         <div class="container">
-            <h1><a href="{{url_for('common.home')}}">MyBlog</a></h1>
-            {% if g.user %}
-            Welcome {{g.user.username}}
-            <a href="{{url_for('auth.logout')}}">Logout</a>
-            {% else %}
-            <a href="{{url_for('auth.login')}}">Login</a>
-            {% endif %}
-            <ul>
-                <li><a href="{{url_for('common.about')}}">About</a></li>
-                <li><a href="{{url_for('posts.list')}}">Posts</a></li>
-                <li><a href="{{url_for('common.link_list')}}">Links</a></li>
-                {% if g.user %}
-                <li>
-                    Admin:
-                    <ul>
-                        <li><a href="{{ url_for('users_admin.list') }}">Users</a></li>
-                        <li><a href="{{ url_for('posts_admin.list') }}">Post</a></li>
-                    </ul>
-                </li>
-                {% endif %}
-            </ul>
-        </div> <!-- header-->
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                </a>
 
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{{ url_for('posts.list')}}" class="nav-link px-2 text-white">Home</a></li>
+                    <li><a href="{{ url_for('posts.list')}}" class="nav-link px-2 text-white">Posts</a></li>
+                    <li><a href="{{ url_for('common.about')}}" class="nav-link px-2 text-white">About</a></li>
+                    {% if g.user %}
+                    <li>
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('posts_admin.list')}}" class="nav-link px-2">Posts</a></li>
+                                <li><a href="{{ url_for('users_admin.list')}}" class="nav-link px-2">Users</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                    <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+                        aria-label="Search">
+                </form>
+
+                <div class="text-end">
+                    {% if g.user %}
+                    <span>{{ g.user['username'] }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light me-2">Log Out</a>
+                    {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light me-2">Log In</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="container">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
         {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
         {% endfor %}
-
-        <div id="content">{% block content %}{% endblock %}</div>
-
-        <div id="footer" class="mt-5">
-            {% block footer %}
-            &copy; Copyright {{now.year}} by <a href="http://domain.invalid/">you</a>.
-            {% endblock %}
-        </div> <!-- footer -->
-    </div>
+        {% block content %}{% endblock %}
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
 </body>
 
 </html>

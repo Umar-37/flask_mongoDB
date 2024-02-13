@@ -21,9 +21,6 @@
 ## Todos
 
 - user env for connection info and secret
-- custom command https://flask.palletsprojects.com/en/3.0.x/cli/#custom-commands
-- bootstrap, cdn then localy hosted
-- README installiation steps
 - flash messages everywhere
 - paging
 

@@ -23,7 +23,7 @@ def seed_test_data(number):
     for i in range(number):
         doc = {
             "title": fake.sentence(3),
-            "body": fake.text(20000),
+            "body": "\n\n".join(fake.paragraphs()),
             "date": datetime.datetime.now()
         }
         posts.insert_one(doc)
