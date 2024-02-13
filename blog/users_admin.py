@@ -1,4 +1,8 @@
 
+import sys
+import click
+
+from getpass import getpass
 from flask import render_template, flash
 from .db import get_database
 from flask import request, redirect, url_for
@@ -13,6 +17,40 @@ from .auth import login_required
 bp = Blueprint('users_admin', __name__, url_prefix='/admin/users')
 dbname = get_database()
 users = dbname["users"]
+
+@bp.cli.command('create')
+@click.argument('username')
+def create(username):
+    user = users.find_one({'username': username})
+    if user is not None:
+        print("User already exists")
+        sys.exit(1)
+    password = getpass()
+    data = {
+            "username": username,
+            "password": generate_password_hash(password),
+    }
+    users.insert_one(data)
+    print(f"user \"{username}\" created")
+
+
+@bp.cli.command('reset')
+@click.argument('username')
+def reset(username):
+    user = users.find_one({'username': username})
+    if user is None:
+        print("User does not exist")
+        sys.exit(1)
+    password = getpass()
+    query = {'username': username}
+    data = {
+        "$set": {
+            "username":username,
+            "password": generate_password_hash(password),
+        }
+    }
+    users.update_one(query, data)
+    print(f"user \"{username}\" password changed")
 
 @bp.route("/")
 @login_required
