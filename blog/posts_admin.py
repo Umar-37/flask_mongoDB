@@ -1,17 +1,34 @@
 import datetime
-from flask import Flask, render_template
-from .db import get_database
-from flask import request, redirect, url_for
+
+from faker import Faker
+from flask import  Blueprint, redirect, render_template, request, url_for
 from bson.objectid import ObjectId
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
-)
+import click
+
 from .auth import login_required
+from .db import get_database
+
+fake = Faker()
 bp = Blueprint('posts_admin', __name__, url_prefix='/admin/posts')
 
 dbname = get_database()
 posts = dbname["posts"]
 
+
+@bp.cli.command('seed_test_data')
+@click.argument('number', type=int)
+def seed_test_data(number):
+    posts = dbname["posts"]
+    # Seed posts
+    for i in range(number):
+        doc = {
+            "title": fake.sentence(3),
+            "body": fake.text(20000),
+            "date": datetime.datetime.now()
+        }
+        posts.insert_one(doc)
+
+    print('Done seeding')
 
 @bp.route("/")
 def list():

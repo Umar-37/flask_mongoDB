@@ -4,7 +4,6 @@ from datetime import datetime
 
 
 def create_app():
-    # create and configure the app
     app = Flask(__name__)
     app.secret_key = "secret"
     app.register_blueprint(common.bp)
@@ -22,6 +21,4 @@ def create_app():
         lines = value.split('\n')
         lines =[f"<p>{line}</p>" for line in lines if line.strip() != '']
         return '\n'.join(lines)
-
-
     return app
