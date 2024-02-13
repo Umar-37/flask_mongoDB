@@ -1,12 +1,9 @@
-
-from flask import Flask, render_template
-from .db import get_database
-from flask import request, redirect, url_for
 from bson.objectid import ObjectId
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
-)
+from flask import Blueprint, render_template
+
 from .auth import login_required
+from .db import get_database
+
 bp = Blueprint('posts', __name__, url_prefix='/posts')
 
 dbname = get_database()

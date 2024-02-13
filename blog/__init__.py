@@ -1,9 +1,11 @@
-from flask import Flask
-from . import posts, posts_admin, auth, common, users_admin
-from datetime import datetime
-from markupsafe import Markup, escape
 import re
+from datetime import datetime
+
+from flask import Flask
+from markupsafe import Markup, escape
 from jinja2 import pass_eval_context
+
+from . import posts, posts_admin, auth, common, users_admin
 
 
 

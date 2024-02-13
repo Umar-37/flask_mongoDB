@@ -1,11 +1,7 @@
 
-from flask import Flask, render_template
+from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
+
 from .db import get_database
-from flask import request, redirect, url_for
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
-)
-from werkzeug.security import check_password_hash
 
 bp = Blueprint('common', __name__, url_prefix='/')
 

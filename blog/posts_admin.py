@@ -12,7 +12,7 @@ fake = Faker()
 bp = Blueprint('posts_admin', __name__, url_prefix='/admin/posts')
 
 dbname = get_database()
-posts = dbname["posts"]
+posts_col = dbname["posts"]
 
 
 @bp.cli.command('seed_test_data')
@@ -32,13 +32,13 @@ def seed_test_data(number):
 
 @bp.route("/")
 def list():
-    rows = posts.find({}, {'title':1})
+    rows = posts_col.find({}, {'title':1})
     return render_template('admin/posts/list.html', posts=rows)
 
 @bp.route("/delete/<id>", methods=['POST'])
 @login_required
 def delete(id):
-    posts.delete_one({'_id':ObjectId(id)})
+    posts_col.delete_one({'_id':ObjectId(id)})
     return redirect(url_for('posts_admin.list'))
 
 @bp.route("/new/", methods=['POST', 'GET'])
@@ -52,7 +52,7 @@ def new():
             "date": datetime.datetime.now(),
             "body": body
         }
-        posts.insert_one(doc)
+        posts_col.insert_one(doc)
         return redirect(url_for('posts_admin.list'))
     return render_template('admin/posts/new.html')
 
@@ -69,7 +69,7 @@ def edit(id):
             '$currentDate': {
                 'date': {'$type': 'date'}
             }}
-        posts.update_one({"_id":ObjectId(id)}, updated)
+        posts_col.update_one({"_id":ObjectId(id)}, updated)
         return redirect(url_for('posts_admin.list'))
-    row = posts.find_one({'_id':ObjectId(id)})
+    row = posts_col.find_one({'_id':ObjectId(id)})
     return render_template('admin/posts/edit.html', post=row)
