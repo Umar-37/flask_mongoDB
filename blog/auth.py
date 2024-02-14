@@ -34,10 +34,8 @@ def login():
         password = request.form['password']
         user = users.find_one({'username':username})
         error = None
-        if user is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+        if user is None or not check_password_hash(user['password'], password):
+            error = 'Incorrect credentials.'
 
         if error is None:
             session.clear()

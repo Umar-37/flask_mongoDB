@@ -73,8 +73,12 @@ def new():
             "username": username,
             "password": hash
         }
-        users_col.insert_one(doc)
-        return redirect(url_for('users_admin.list'))
+        user = users_col.find_one({'username': username})
+        if user:
+            flash("User already exists")
+        else:
+            users_col.insert_one(doc)
+            return redirect(url_for('users_admin.list'))
     return render_template('admin/users/new.html')
 
 @bp.route("/edit/<id>", methods=['POST', 'GET'])
