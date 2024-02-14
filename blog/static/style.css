@@ -9,3 +9,18 @@
     margin-bottom: 1rem;
     padding: 1rem;
 }
+
+nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.form-signin {
+    max-width: 20rem;
+    padding: 1rem;
+}
+
+.container h2 {
+    margin-top: 1rem;
+}
