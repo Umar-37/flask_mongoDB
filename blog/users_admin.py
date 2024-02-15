@@ -3,12 +3,13 @@ import sys
 import click
 from getpass import getpass
 
-from flask import Blueprint, redirect, render_template, flash, request, url_for
+from flask import Blueprint, redirect, render_template, flash, request, url_for, g
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
 
 from blog.db import get_db
 from .auth import login_required
+from .utils import pagination
 
 
 bp = Blueprint("users_admin", __name__, url_prefix="/admin/users")
@@ -52,9 +53,10 @@ def reset(username):
 @bp.route("/")
 @login_required
 def list():
-    users_col = get_db("users")
-    rows = users_col.find()
-    return render_template("admin/users/list.html", users=rows)
+    current_page = int(request.args.get("page", 1))
+    ctx = pagination("users", current_page)
+    rows = ctx["rows"]
+    return render_template("admin/users/list.html", users=rows, ctx=ctx)
 
 @bp.route("/delete/<id>", methods=["POST"])
 @login_required

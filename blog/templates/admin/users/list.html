@@ -26,6 +26,7 @@
         {% endfor %}
     </tbody>
 </table>
+{% include 'components/pager.html' %}
 
 <a href="{{url_for('users_admin.new')}}" class="btn btn-primary">New User</a>
 {% endblock %}

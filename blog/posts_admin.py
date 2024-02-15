@@ -7,6 +7,7 @@ import click
 
 from .auth import login_required
 from blog.db import get_db
+from .utils import pagination
 
 
 fake = Faker()
@@ -29,9 +30,10 @@ def seed_test_data(number):
 
 @bp.route("/")
 def list():
-    posts_col = get_db("posts")
-    rows = posts_col.find({}, {"title":1})
-    return render_template("admin/posts/list.html", posts=rows)
+    current_page = int(request.args.get("page", 1))
+    ctx = pagination("posts", current_page, [{"$project": {"title": 1}}])
+    rows = ctx["rows"]
+    return render_template("admin/posts/list.html", posts=rows, ctx=ctx)
 
 @bp.route("/delete/<id>", methods=["POST"])
 @login_required
