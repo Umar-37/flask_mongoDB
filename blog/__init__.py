@@ -19,9 +19,9 @@ def create_app(test_config=None):
 
     @app.context_processor
     def inject_now():
-        return {'now': datetime.utcnow()}
+        return {"now": datetime.utcnow()}
 
-    @app.template_filter('nl2br')
+    @app.template_filter("nl2br")
     @pass_eval_context
     def nl2br(eval_ctx, value):
         br = "<br>\n"
@@ -38,7 +38,7 @@ def create_app(test_config=None):
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
+        app.config.from_pyfile("config.py", silent=True)
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)

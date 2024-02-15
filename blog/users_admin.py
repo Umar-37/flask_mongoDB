@@ -11,13 +11,13 @@ from blog.db import get_db
 from .auth import login_required
 
 
-bp = Blueprint('users_admin', __name__, url_prefix='/admin/users')
+bp = Blueprint("users_admin", __name__, url_prefix="/admin/users")
 
-@bp.cli.command('create')
-@click.argument('username')
+@bp.cli.command("create")
+@click.argument("username")
 def create(username):
     users_col = get_db("users")
-    user = users_col.find_one({'username': username})
+    user = users_col.find_one({"username": username})
     if user is not None:
         print("User already exists")
         sys.exit(1)
@@ -30,16 +30,16 @@ def create(username):
     print(f"user \"{username}\" created")
 
 
-@bp.cli.command('reset')
-@click.argument('username')
+@bp.cli.command("reset")
+@click.argument("username")
 def reset(username):
     users_col = get_db("users")
-    user = users_col.find_one({'username': username})
+    user = users_col.find_one({"username": username})
     if user is None:
         print("User does not exist")
         sys.exit(1)
     password = getpass()
-    query = {'username': username}
+    query = {"username": username}
     data = {
         "$set": {
             "username":username,
@@ -54,37 +54,37 @@ def reset(username):
 def list():
     users_col = get_db("users")
     rows = users_col.find()
-    return render_template('admin/users/list.html', users=rows)
+    return render_template("admin/users/list.html", users=rows)
 
-@bp.route("/delete/<id>", methods=['POST'])
+@bp.route("/delete/<id>", methods=["POST"])
 @login_required
 def delete(id):
     users_col = get_db("users")
-    users_col.delete_one({'_id':ObjectId(id)})
+    users_col.delete_one({"_id":ObjectId(id)})
     flash("User deleted")
-    return redirect(url_for('users_admin.list'))
+    return redirect(url_for("users_admin.list"))
 
-@bp.route("/new/", methods=['POST', 'GET'])
+@bp.route("/new/", methods=["POST", "GET"])
 @login_required
 def new():
     users_col = get_db("users")
     if request.method == "POST":
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form["username"]
+        password = request.form["password"]
         hash = generate_password_hash(password)
         doc = {
             "username": username,
             "password": hash
         }
-        user = users_col.find_one({'username': username})
+        user = users_col.find_one({"username": username})
         if user:
             flash("User already exists")
         else:
             users_col.insert_one(doc)
-            return redirect(url_for('users_admin.list'))
-    return render_template('admin/users/new.html')
+            return redirect(url_for("users_admin.list"))
+    return render_template("admin/users/new.html")
 
-@bp.route("/edit/<id>", methods=['POST', 'GET'])
+@bp.route("/edit/<id>", methods=["POST", "GET"])
 @login_required
 def edit(id):
     users_col = get_db("users")
@@ -92,8 +92,8 @@ def edit(id):
         username = request.form["username"]
         password = request.form["password"]
         hash = generate_password_hash(password)
-        updated = {'$set': {'password': hash, "username": username}}
+        updated = {"$set": {"password": hash, "username": username}}
         users_col.update_one({"_id":ObjectId(id)}, updated)
-        return redirect(url_for('users_admin.list'))
-    row = users_col.find_one({'_id':ObjectId(id)})
-    return render_template('admin/users/edit.html', user=row)
+        return redirect(url_for("users_admin.list"))
+    row = users_col.find_one({"_id":ObjectId(id)})
+    return render_template("admin/users/edit.html", user=row)
