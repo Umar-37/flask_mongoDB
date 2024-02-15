@@ -7,17 +7,16 @@ from flask import Blueprint, redirect, render_template, flash, request, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
 
-from .db import get_database
+from blog.db import get_db
 from .auth import login_required
 
 
 bp = Blueprint('users_admin', __name__, url_prefix='/admin/users')
-dbname = get_database()
-users_col = dbname["users"]
 
 @bp.cli.command('create')
 @click.argument('username')
 def create(username):
+    users_col = get_db("users")
     user = users_col.find_one({'username': username})
     if user is not None:
         print("User already exists")
@@ -34,6 +33,7 @@ def create(username):
 @bp.cli.command('reset')
 @click.argument('username')
 def reset(username):
+    users_col = get_db("users")
     user = users_col.find_one({'username': username})
     if user is None:
         print("User does not exist")
@@ -52,12 +52,14 @@ def reset(username):
 @bp.route("/")
 @login_required
 def list():
+    users_col = get_db("users")
     rows = users_col.find()
     return render_template('admin/users/list.html', users=rows)
 
 @bp.route("/delete/<id>", methods=['POST'])
 @login_required
 def delete(id):
+    users_col = get_db("users")
     users_col.delete_one({'_id':ObjectId(id)})
     flash("User deleted")
     return redirect(url_for('users_admin.list'))
@@ -65,6 +67,7 @@ def delete(id):
 @bp.route("/new/", methods=['POST', 'GET'])
 @login_required
 def new():
+    users_col = get_db("users")
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
@@ -84,6 +87,7 @@ def new():
 @bp.route("/edit/<id>", methods=['POST', 'GET'])
 @login_required
 def edit(id):
+    users_col = get_db("users")
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]

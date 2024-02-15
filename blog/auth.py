@@ -4,20 +4,19 @@ from bson.objectid import ObjectId
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
 
-from .db import get_database
+from blog.db import get_db
+
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-dbname = get_database()
-users = dbname["users"]
-
 @bp.before_app_request
 def load_logged_in_user():
+    users_col = get_db("users")
     user_id = session.get('user_id')
     if user_id is None:
         g.user = None
     else:
-        g.user = users.find_one({'_id':ObjectId(user_id)})
+        g.user = users_col.find_one({'_id':ObjectId(user_id)})
 
 def login_required(view):
     @functools.wraps(view)
@@ -29,10 +28,11 @@ def login_required(view):
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    users_col = get_db("users")
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = users.find_one({'username':username})
+        user = users_col.find_one({'username':username})
         error = None
         if user is None or not check_password_hash(user['password'], password):
             error = 'Incorrect credentials.'

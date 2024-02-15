@@ -1,13 +1,8 @@
 
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 
-from .db import get_database
 
 bp = Blueprint('common', __name__, url_prefix='/')
-
-dbname = get_database()
-users = dbname["users"]
-
 
 @bp.route("/")
 def home():
