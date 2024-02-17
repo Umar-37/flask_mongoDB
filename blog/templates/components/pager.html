@@ -1,19 +1,33 @@
 <nav>
-    <div>
-    </div>
     <ul class="pagination">
         <li class="page-item {% if ctx.current_page == 1 %} disabled {% endif %}">
-            <a class="page-link" href="{{url_for(request.endpoint, page=ctx.current_page-1)}}">Previous</a>
+            <a class="page-link bi bi-chevron-double-left" href="{{url_for(request.endpoint, page=1)}}"></a>
+        </li>
+        <li class="page-item {% if ctx.current_page == 1 %} disabled {% endif %}">
+            <a class="page-link bi bi-chevron-left" href="{{url_for(request.endpoint, page=ctx.current_page-1)}}"></a>
         </li>
 
-        {% for i in range(1, ctx.pages + 1) %}
+        {% if ctx.pages[0] > 1 %}
+        <li class="page-link disabled">...</li>
+        {% endif %}
+
+        {% for i in range(ctx.pages[0], ctx.pages[1] + 1) %}
         <li class="page-item{% if i == ctx.current_page %} active {% endif %}">
-            <a class="page-link" href="{{url_for(request.endpoint, page=i)}}">{{i}}</a>
+            <a class="page-link {% if ctx.current_page == i %} disabled {% endif %}"
+                href="{{url_for(request.endpoint, page=i)}}">{{i}}</a>
         </li>
         {% endfor %}
 
-        <li class="page-item {% if ctx.current_page == ctx.pages %}disabled{% endif %}">
-            <a class="page-link" href="{{url_for(request.endpoint, page=ctx.current_page+1)}}">Next</a>
+        {% if ctx.total_pages > ctx.pages[1] %}
+        <li class="page-link disabled">...</li>
+        {% endif %}
+
+        <li class="page-item {% if ctx.current_page==ctx.total_pages %} disabled {% endif %}">
+            <a class="page-link bi bi-chevron-right" href="{{url_for(request.endpoint, page=ctx.current_page+1)}}"></a>
+        </li>
+        <li class="page-item {% if ctx.current_page==ctx.pages[1] %} disabled {% endif %}">
+            <a class="page-link bi bi-chevron-double-right"
+                href="{{url_for(request.endpoint, page=ctx.total_pages)}}"></a>
         </li>
     </ul>
 </nav>
