@@ -14,8 +14,8 @@
     flask --app blog users_admin create newuser
     # Reset user password
     flask --app blog users_admin reset currentuser
-    # Fake blog data
-    flask --app blog posts_admin seed_test_data
+    # Seed fake posts
+    flask --app blog posts_admin seed_test_data 10
 
 
 ## Todos

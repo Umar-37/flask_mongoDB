@@ -26,7 +26,7 @@ def seed_test_data(number):
         }
         posts_col.insert_one(doc)
 
-    print("Done seeding")
+    print(f"Done seeding {number} posts")
 
 @bp.route("/")
 def list():
