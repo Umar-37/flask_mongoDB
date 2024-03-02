@@ -1,4 +1,4 @@
-# Flask and MongoDb sample blog app
+# Flask and MongoDB sample blog app
 
 ## Installation
     python3 -m venv venv
