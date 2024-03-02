@@ -1,4 +1,4 @@
-from blog.db import get_db
+from .db import get_db
 
 def pagination(collection, current_page, filters = []):
     page_range_window = 6

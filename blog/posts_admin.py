@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 import click
 
 from .auth import login_required
-from blog.db import get_db
+from .db import get_db
 from .utils import pagination
 
 

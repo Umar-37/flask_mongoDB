@@ -3,11 +3,11 @@ import sys
 import click
 from getpass import getpass
 
-from flask import Blueprint, redirect, render_template, flash, request, url_for, g
+from flask import Blueprint, redirect, render_template, flash, request, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
 
-from blog.db import get_db
+from .db import get_db
 from .auth import login_required
 from .utils import pagination
 

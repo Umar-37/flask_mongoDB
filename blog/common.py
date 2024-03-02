@@ -1,5 +1,5 @@
 
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
+from flask import Blueprint, redirect, render_template, url_for
 
 
 bp = Blueprint("common", __name__, url_prefix="/")
